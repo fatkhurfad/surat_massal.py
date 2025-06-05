@@ -8,63 +8,66 @@ from io import BytesIO
 import zipfile
 
 st.set_page_config(page_title="Generator Surat Massal", layout="centered")
-# Tambahkan gaya visual untuk tampilan yang lebih modern
+st.title("📄 Generator Surat Massal TIM PMT")
 st.markdown("""
     <style>
-    body, .stApp {
-        background-color: #f9f9f9;
-        font-family: 'Segoe UI', sans-serif;
-        color: #333;
+    html, body, .stApp {
+        background-color: #f7f9fa;
+        font-family: 'Helvetica Neue', 'Segoe UI', sans-serif;
+        color: #212121;
     }
 
-    .css-10trblm {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #2f80ed;
-    }
-
-    .stFileUploader label {
-        font-size: 1rem;
-        color: #444;
+    .stButton > button, .stDownloadButton > button {
+        font-size: 16px;
         font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 8px;
+        border: none;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     .stButton > button {
-        background-color: #2f80ed;
+        background-color: #03AC0E; /* Tokopedia green */
         color: white;
-        font-size: 1rem;
-        padding: 0.6rem 1.5rem;
-        border-radius: 8px;
-        border: none;
-        transition: background-color 0.3s ease;
     }
 
     .stButton > button:hover {
-        background-color: #1c64d1;
+        background-color: #02960C;
     }
 
     .stDownloadButton > button {
-        background-color: #27ae60;
+        background-color: #028A0D;
         color: white;
-        font-size: 1rem;
-        padding: 0.6rem 1.5rem;
-        border-radius: 8px;
-        border: none;
-        transition: background-color 0.3s ease;
     }
 
     .stDownloadButton > button:hover {
-        background-color: #219653;
+        background-color: #026D0A;
+    }
+
+    .stFileUploader label {
+        color: #424242;
+        font-weight: 600;
+    }
+
+    .css-10trblm {
+        font-size: 24px;
+        font-weight: 700;
+        color: #03AC0E;
+    }
+
+    .stTextInput > div > input {
+        border-radius: 6px;
+        padding: 0.5em;
     }
 
     .stAlert {
         background-color: #e8f5e9;
-        border-left: 5px solid #27ae60;
+        border-left: 5px solid #03AC0E;
     }
     </style>
 """, unsafe_allow_html=True)
 
-st.title("📄 Generator Surat Massal TIM PMT")
 
 def add_hyperlink(paragraph, text, url):
     part = paragraph.part
