@@ -8,7 +8,7 @@ from io import BytesIO
 import zipfile
 
 st.set_page_config(page_title="Generator Surat Massal", layout="centered")
-st.title("📄 Generator Surat Massal Word (Hyperlink Aktif + Arial 12)")
+st.title("📄 Generator Surat Massal TIM PMT")
 
 def add_hyperlink(paragraph, text, url):
     part = paragraph.part
