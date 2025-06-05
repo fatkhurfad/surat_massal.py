@@ -20,16 +20,32 @@ def add_hyperlink(paragraph, text, url):
     hyperlink.set(qn("r:id"), r_id)
 
     new_run = OxmlElement("w:r")
+
+    # Styling hyperlink (Arial, 12pt, blue, underline)
     rPr = OxmlElement("w:rPr")
-    rStyle = OxmlElement("w:rStyle")
-    rStyle.set(qn("w:val"), "Hyperlink")
-    rPr.append(rStyle)
+
+    rFonts = OxmlElement("w:rFonts")
+    rFonts.set(qn("w:ascii"), "Arial")
+    rFonts.set(qn("w:hAnsi"), "Arial")
+    rPr.append(rFonts)
+
+    sz = OxmlElement("w:sz")
+    sz.set(qn("w:val"), "24")  # 12pt = 24 half-points
+    rPr.append(sz)
+
+    color = OxmlElement("w:color")
+    color.set(qn("w:val"), "0000FF")  # blue
+    rPr.append(color)
+
+    underline = OxmlElement("w:u")
+    underline.set(qn("w:val"), "single")
+    rPr.append(underline)
+
     new_run.append(rPr)
 
     text_elem = OxmlElement("w:t")
     text_elem.text = text
     new_run.append(text_elem)
-
     hyperlink.append(new_run)
     paragraph._p.append(hyperlink)
 
