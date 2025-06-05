@@ -1,12 +1,37 @@
 import streamlit as st
 import pandas as pd
 from docx import Document
-from docx.shared import Pt, RGBColor
+from docx.shared import Pt
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 from io import BytesIO
 import zipfile
 
 st.set_page_config(page_title="Generator Surat Massal", layout="centered")
-st.title("📄 Generator Surat Massal Word (Arial 12 + Hyperlink)")
+st.title("📄 Generator Surat Massal Word (Hyperlink Aktif + Arial 12)")
+
+def add_hyperlink(paragraph, text, url):
+    part = paragraph.part
+    r_id = part.relate_to(url,
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
+        is_external=True)
+
+    hyperlink = OxmlElement("w:hyperlink")
+    hyperlink.set(qn("r:id"), r_id)
+
+    new_run = OxmlElement("w:r")
+    rPr = OxmlElement("w:rPr")
+    rStyle = OxmlElement("w:rStyle")
+    rStyle.set(qn("w:val"), "Hyperlink")
+    rPr.append(rStyle)
+    new_run.append(rPr)
+
+    text_elem = OxmlElement("w:t")
+    text_elem.text = text
+    new_run.append(text_elem)
+
+    hyperlink.append(new_run)
+    paragraph._p.append(hyperlink)
 
 uploaded_template = st.file_uploader("Upload Template Word (.docx)", type="docx")
 uploaded_excel = st.file_uploader("Upload Data Excel (.xlsx)", type="xlsx")
@@ -32,15 +57,9 @@ if uploaded_template and uploaded_excel:
                         if "{{short_link}}" in p.text:
                             parts = p.text.split("{{short_link}}")
                             p.clear()
-                            if parts[0]:
-                                p.add_run(parts[0])
-                            link_run = p.add_run(row["short_link"])
-                            link_run.font.name = "Arial"
-                            link_run.font.size = Pt(12)
-                            link_run.font.color.rgb = RGBColor(0, 0, 255)
-                            link_run.underline = True
-                            if len(parts) > 1:
-                                p.add_run(parts[1])
+                            if parts[0]: p.add_run(parts[0])
+                            add_hyperlink(p, row["short_link"], row["short_link"])
+                            if len(parts) > 1: p.add_run(parts[1])
 
                     for p in doc.paragraphs:
                         for run in p.runs:
